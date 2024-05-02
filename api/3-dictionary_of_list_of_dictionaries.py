@@ -9,6 +9,7 @@ if __name__ == "__main__":
     import requests
     from sys import argv
     import json
+    import os
 
     link = "https://jsonplaceholder.typicode.com"
 
@@ -29,5 +30,10 @@ if __name__ == "__main__":
                 "username": name,
             }
         )
+
+    currentDirectory = os.path.dirname(os.path.realpath(__file__))
+
+    json_file_path = os.path.join(currentDirectory, "todo_all_employees.json")
+
     with open(f"{user_id}.json", "w") as result_file:
         json.dump(result, result_file)
