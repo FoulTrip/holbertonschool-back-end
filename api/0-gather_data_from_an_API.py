@@ -13,19 +13,15 @@ if __name__ == "__main__":
     import requests
     from sys import argv
 
+    link = "https://jsonplaceholder.typicode.com"
+
     if len(argv) < 2:
         exit()
-    todos = requests.get(
-        f"https://jsonplaceholder.typicode.com/todos?userId={argv[1]}&completed=true"
-    )
-    name = requests.get(
-        f"https://jsonplaceholder.typicode.com/users?id={argv[1]}"
-    )
+    todos = requests.get(f"{link}/todos?userId={argv[1]}&completed=true")
+    name = requests.get(f"{link}/users?id={argv[1]}")
     name = name.json()
     name = name[0]["name"]
-    todo = requests.get(
-        f"https://jsonplaceholder.typicode.com/todos?userId={argv[1]}"
-    )
+    todo = requests.get(f"{link}/todos?userId={argv[1]}")
     todo = todo.json()
     todo = len(todo)
     todos = todos.json()
@@ -33,8 +29,6 @@ if __name__ == "__main__":
 
     for x in todos:
         todo_list.append("\t {}".format(x["title"]))
-    print(
-        f"Employee {name} is done with tasks({len(todos)}/{ todo}):"
-    )
+    print(f"Employee {name} is done with tasks({len(todos)}/{todo}):")
     for y in todo_list:
         print(y)
