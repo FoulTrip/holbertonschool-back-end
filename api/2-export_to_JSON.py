@@ -23,7 +23,11 @@ if __name__ == "__main__":
     result[argv[1]] = []
     for todo in todos:
         result[argv[1]].append(
-            {"task": todo["title"], "completed": todo["completed"], "username": name}
+            {
+                "task": todo["title"], 
+                "completed": todo["completed"], 
+                "username": name
+            }
         )
     with open("{}.json".format(argv[1]), "w") as result_file:
         json.dump(result, result_file)
