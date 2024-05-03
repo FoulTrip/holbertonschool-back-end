@@ -35,5 +35,8 @@ if __name__ == "__main__":
 
     json_file_path = os.path.join(currentDirectory, "todo_all_employees.json")
 
-    with open(f"{user_id}.json", "w") as result_file:
+    with open(json_file_path, "w") as result_file:
         json.dump(result, result_file)
+
+    with open(json_file_path, "r") as f:
+        data = f.read()
