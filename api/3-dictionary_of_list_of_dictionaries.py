@@ -1,42 +1,41 @@
 #!/usr/bin/python3
+""""
+Using what you did in the task #0, extend your Python script to export data in the JSON format.
 """
-Script to export data in the JSON format.
-"""
+import json
+import requests
 
 
 if __name__ == "__main__":
 
-    import requests
-    from sys import argv
-    import json
-    import os
-
     link = "https://jsonplaceholder.typicode.com"
+    users_url = f"{link}/users"
+    response = requests.get(users_url)
 
-    if len(argv) < 2:
-        exit()
-    user_id = argv[1]
-    todos = requests.get(f"{link}/todos?userId={user_id}")
-    user_info = requests.get(f"{link}/users?id={user_id}")
-    name = user_info.json()[0]["username"]
-    todos = todos.json()
-    result = {}
-    result[user_id] = []
-    for todo in todos:
-        result[user_id].append(
-            {
-                "task": todo["title"],
-                "completed": todo["completed"],
-                "username": name,
-            }
-        )
+    user_data = response.json()
 
-    currentDirectory = os.path.dirname(os.path.realpath(__file__))
+    allurl = f"{link}/todos"
+    todo_response = requests.get(allurl)
 
-    json_file_path = os.path.join(currentDirectory, "todo_all_employees.json")
+    todos = todo_response.json()
 
-    with open(json_file_path, "w") as result_file:
-        json.dump(result, result_file)
+    all_employees_data = {}
 
-    with open(json_file_path, "r") as f:
-        data = f.read()
+    for user in user_data:
+        datas_exported = []
+        user_id = user.get("id")
+        user_name = user.get("username")
+        for task in todos:
+            if task["userId"] == user_id:
+                data_to_export = {
+                    "username": user_name,
+                    "task": task["title"],
+                    "completed": task["completed"],
+                }
+                datas_exported.append(data_to_export)
+
+        all_employees_data[user_id] = datas_exported
+
+    filename = "todo_all_employees.json"
+    with open(filename, mode="w") as file:
+        json.dump(all_employees_data, file)
